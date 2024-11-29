@@ -6,7 +6,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export const routes = createBrowserRouter([
 	{
-		path: "/",
+		path: "/ScheduleForTheWeek",
 		element: <Starting />,
 		errorElement: <ErrorBoundary />,
 	},
