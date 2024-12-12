@@ -4,7 +4,7 @@
 
 #### Демонстрация приложения ScheduleForTheWeek:
 
-![gif](https://github.com/AnastasiyaMAV/KeycloakProject/blob/main/src/assets/ScheduleForTheWeek.gif)
+![gif](https://github.com/AnastasiyaMAV/ScheduleForTheWeek/blob/main/src/assets/ScheduleForTheWeek.gif)
 
 #### Страница приложения ScheduleForTheWeek:
 
