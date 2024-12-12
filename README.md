@@ -4,6 +4,8 @@
 
 #### Демонстрация приложения ScheduleForTheWeek:
 
+Приложение позволяет формировать расписание по времени на неделю, максимальное количество интервалов времени в дне 10. Также есть возможность редактировать расписание и экспортировать в файл формата txt.
+
 ![gif](https://github.com/AnastasiyaMAV/ScheduleForTheWeek/blob/main/src/assets/ScheduleForTheWeek.gif)
 
 #### Страница приложения ScheduleForTheWeek:
