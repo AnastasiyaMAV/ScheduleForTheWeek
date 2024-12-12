@@ -11,7 +11,7 @@ import { MODALS, modalsActions } from "@/stores/modals";
 import { scheduleState } from "@/stores/schedule";
 
 export const Starting = () => {
-	const { data, isSaveData } = useStore(scheduleState.$store);
+	const { data, isSaveData, intervalsAtDayLimit } = useStore(scheduleState.$store);
 
 	return (
 		<>
@@ -21,6 +21,7 @@ export const Starting = () => {
 						<Typography variant="h3" component="h2">
 							Расписание на неделю
 						</Typography>
+
 						<Button variant="outlined" onClick={() => modalsActions.openModal(MODALS.INSTRUCTIONS)}>
 							Инструкция
 						</Button>
@@ -37,6 +38,7 @@ export const Starting = () => {
 								defaultAllDaysInterval={defaultInterval}
 								value={data}
 								onChange={scheduleState.setValue}
+								intervalsAtDayLimit={intervalsAtDayLimit}
 							/>
 						)}
 					</Box>

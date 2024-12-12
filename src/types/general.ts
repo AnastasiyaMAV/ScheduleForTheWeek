@@ -16,9 +16,23 @@ export type TScheduleProps = {
 	value?: TScheduleState;
 	onChange?: (value: TScheduleState) => void;
 	previewMode?: boolean;
-	intervalsAtDayLimit?: number;
+	intervalsAtDayLimit?: string;
 	defaultAllDaysInterval?: TInterval;
 	defaultOneDayInterval?: TInterval;
+};
+
+export type TPopoverDetailsProps = {
+	details?: string;
+	id?: number;
+};
+
+export type TButtonsGroupProps = {
+	previewMode?: boolean;
+};
+
+export type TPopoverIntervalProps = {
+	value?: TScheduleState;
+	onChange?: (value: TScheduleState) => void;
 };
 
 export enum TDay {

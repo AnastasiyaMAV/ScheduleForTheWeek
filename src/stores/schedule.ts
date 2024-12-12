@@ -1,7 +1,7 @@
 import { dayToTextMap, scheduleObj } from "@/const/schedule";
 import { TDay, TInputValues, TScheduleState } from "@/types/general";
 import { downloadFromBlob } from "@/utils/general";
-// import { format } from "date-fns";
+import { SelectChangeEvent } from "@mui/material";
 import { deepMap } from "nanostores";
 
 export type TScheduleStore = {
@@ -9,6 +9,7 @@ export type TScheduleStore = {
 	inputValues: TInputValues;
 	editedIndex: number | undefined;
 	isSaveData: boolean;
+	intervalsAtDayLimit?: string;
 };
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
 	inputValues: { first: "", second: "", error: "", text: "", id: undefined },
 	editedIndex: undefined,
 	isSaveData: false,
+	intervalsAtDayLimit: "4",
 };
 
 function createSchedule() {
@@ -69,6 +71,10 @@ function createSchedule() {
 		download(`ScheduleForTheWeek${new Date().toLocaleString().slice(0, 10)}.txt`);
 	};
 
+	const setIntervalsAtDayLimit = (event: SelectChangeEvent) => {
+		$store.setKey("intervalsAtDayLimit", event.target.value as string);
+	};
+
 	return {
 		$store,
 		setValue,
@@ -76,6 +82,7 @@ function createSchedule() {
 		setIsSaveData,
 		setEditedIndex,
 		setInputValues,
+		setIntervalsAtDayLimit,
 	};
 }
 

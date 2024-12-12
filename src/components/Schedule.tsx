@@ -10,11 +10,13 @@ import { Fragment, KeyboardEventHandler, useMemo, useRef } from "react";
 import { popoversState } from "@/stores/popovers";
 import { scheduleState } from "@/stores/schedule";
 
+import { ButtonsGroup } from "./ButtonsGroup";
+import { MaximumNumberOfIntervals } from "./MaximumNumberOfIntervals";
+import { PopoverDetails } from "./PopoverDetails";
 import { TextFieldCustom } from "./TextFieldCustom";
 import { TitleButtons } from "./TitleButtons";
 
 export const Schedule = ({
-	intervalsAtDayLimit = 4,
 	onChange,
 	value,
 	defaultAllDaysInterval,
@@ -24,7 +26,7 @@ export const Schedule = ({
 	const currentFocusDayRef = useRef<TDay | null>(null);
 	const triggerInputsRef = useRef<HTMLElement | null>(null);
 
-	const { inputValues, editedIndex, isSaveData } = useStore(scheduleState.$store);
+	const { inputValues, editedIndex } = useStore(scheduleState.$store);
 	const { isOpenInterval, anchorElInterval, anchorElDetails } = useStore(popoversState.$store);
 
 	const schedule = useMemo(() => value || defaultState, [value]);
@@ -295,7 +297,6 @@ export const Schedule = ({
 						Детали задания
 					</Typography>
 					<TextField
-						id="outlined-multiline-static"
 						placeholder="Здесь можно описать своё задание"
 						value={inputValues.text ? inputValues.text : undefined}
 						onChange={v => setInputValue("text", v.target.value)}
@@ -333,8 +334,10 @@ export const Schedule = ({
 
 			<Paper
 				elevation={3}
-				sx={{ width: "750px", m: "24px", p: "16px", borderRadius: "5px", display: "flex", flexDirection: "column" }}
+				sx={{ width: "850px", m: "24px", p: "16px", borderRadius: "5px", display: "flex", flexDirection: "column" }}
 			>
+				<MaximumNumberOfIntervals />
+
 				<div>
 					{props.previewMode || (
 						<TitleButtons
@@ -349,11 +352,19 @@ export const Schedule = ({
 						<Box sx={{ display: "flex", gap: "8px", flexDirection: "column" }}>
 							{scheduleAsArray.map(({ day, daysMap, dayText }) => (
 								<Box key={day} sx={{ display: "flex", gap: "6px", alignItems: "center" }}>
-									<Typography sx={{ flexBasis: "130px" }} variant="inherit">
-										{schedule.isAllDaysMode ? "Все дни недели" : dayText}
-									</Typography>
+									<Box sx={{ flexBasis: "130px", flexShrink: 0 }}>
+										<Typography variant="inherit">{schedule.isAllDaysMode ? "Все дни недели" : dayText}</Typography>
+									</Box>
 
-									<Box sx={{ display: "flex", gap: "8px", alignItems: "center" }}>
+									<Box
+										sx={{
+											display: "flex",
+											gap: "8px",
+											alignItems: "center",
+											flexWrap: "wrap",
+											flexGrow: 1,
+										}}
+									>
 										{daysMap.intervals.map((d, k) => (
 											<Fragment key={d.id}>
 												<Badge
@@ -381,27 +392,11 @@ export const Schedule = ({
 													{serializeTimeString(d.from)} - {serializeTimeString(d.to)}
 												</Badge>
 
-												{d.details && anchorElDetails.anchorEl && (
-													<Popover
-														sx={{ pointerEvents: "none" }}
-														open={anchorElDetails.openedPopoverId === d.id}
-														anchorEl={anchorElDetails.anchorEl}
-														anchorOrigin={{
-															vertical: "center",
-															horizontal: "right",
-														}}
-														transformOrigin={{
-															vertical: "center",
-															horizontal: "left",
-														}}
-													>
-														<Typography sx={{ p: 1 }}>{d.details}</Typography>
-													</Popover>
-												)}
+												{d.details && anchorElDetails.anchorEl && <PopoverDetails details={d.details} id={d.id} />}
 											</Fragment>
 										))}
 
-										{daysMap.intervals.length < intervalsAtDayLimit && !props.previewMode && (
+										{daysMap.intervals.length < Number(props.intervalsAtDayLimit) && !props.previewMode && (
 											<Link
 												sx={{ cursor: "pointer" }}
 												onClick={event => {
@@ -417,34 +412,7 @@ export const Schedule = ({
 						</Box>
 					</Box>
 
-					{props.previewMode ? (
-						<Box sx={{ display: "flex", gap: "12px", justifyContent: "end" }}>
-							<Button
-								sx={{ width: "100px", marginTop: "24px", alignSelf: "end" }}
-								variant="contained"
-								onClick={() => scheduleState.setIsSaveData(!isSaveData)}
-							>
-								Изменить
-							</Button>
-							<Button
-								sx={{ width: "100px", marginTop: "24px", alignSelf: "end" }}
-								variant="contained"
-								onClick={() => scheduleState.exportData()}
-							>
-								Экспорт
-							</Button>
-						</Box>
-					) : (
-						<Box sx={{ display: "flex", justifyContent: "end" }}>
-							<Button
-								sx={{ width: "100px", marginTop: "24px" }}
-								variant="contained"
-								onClick={() => scheduleState.setIsSaveData(!isSaveData)}
-							>
-								Сохранить
-							</Button>
-						</Box>
-					)}
+					<ButtonsGroup previewMode={props.previewMode} />
 				</div>
 			</Paper>
 		</>
